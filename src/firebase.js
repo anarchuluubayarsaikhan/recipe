@@ -2,13 +2,13 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, FacebookAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAA92AWJeB44PWzSetlFo0VvJTl7hK06HM',
-  authDomain: 'recipe-816db.firebaseapp.com',
-  projectId: 'recipe-816db',
-  storageBucket: 'recipe-816db.firebasestorage.app',
-  messagingSenderId: '611651143059',
-  appId: '1:611651143059:web:3a64e9f572a3605d141466',
-  measurementId: 'G-0Z3GTQ0SN9',
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_APP_ID,
+  measurementId: process.env.VUE_APP_MEASUREMENT_ID,
 };
 
 
