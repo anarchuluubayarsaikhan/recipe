@@ -1,26 +1,55 @@
 <template>
     <div class="FoodContainer">
+        <router-link :to="{ name: 'details', params: { id: recipe.id } }">
             <div class="ImageContainer">
-                <img :src="require('@/public/spagetti.jpg')" alt="Spaghetti Carbonara">
+                <img :src="recipe.image" :alt="recipe.name">
             </div>
-            <p class="NameOfCuisine">
-                CARBONARA
-            </p>
-            <button>
-                Save recipe
-            </button>
-        </div>
+        </router-link>
+        <p class="NameOfCuisine">
+            {{ recipe.name }}
+        </p>
+        <button @click="saveRecipe(recipe)">
+            Save recipe
+        </button>
+    </div>
+
 </template>
 <script>
-export default{
-    
+import { addDoc, collection, db, query, where, getDocs } from '../firebase'
+export default {
+    props: {
+        recipe: {
+            type: Object
+        }
+    },
+    methods: {
+        async saveRecipe(recipe) {
+            try {
+                const recipesCollection = collection(db, "savedrecipes");
+                const q = query(recipesCollection, where("id", "==", recipe.id));
+
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    this.$toast.error('Already saved!');
+                } else {
+
+                    await addDoc(recipesCollection, recipe);
+                    this.$toast.success('Recipe saved successfully!');
+                }
+            } catch (error) {
+                console.error("Error saving recipe: ", error);
+                this.$toast.error('Could not save the recipe!');
+            }
+        }
+    }
 }
 </script>
 <style>
 .FoodContainer {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; 
+    justify-content: space-between;
     padding: 10px;
     border: 1px solid #d3d3d3;
     border-radius: 24px;
@@ -41,8 +70,9 @@ export default{
     font-size: 1.3rem;
     margin-top: 10px;
     text-align: center;
-    flex-grow: 1;  
+    flex-grow: 1;
 }
+
 .ImageContainer {
     width: 100%;
     height: 200px;
@@ -66,17 +96,18 @@ button {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    align-self: flex-end; 
+    align-self: flex-end;
 }
 
 button:hover {
-    color:white;
+    color: white;
     transform: translateY(-2px);
 }
 
 button:focus {
     outline: 2px solid #f8b400;
 }
+
 @media (max-width: 480px) {
     #FoodsContainer {
         grid-template-columns: 1fr;

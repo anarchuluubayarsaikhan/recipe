@@ -1,37 +1,15 @@
 <template>
     <div>
         <NavigationPart/>
-        <div id="FoodsContainer">
-        <div class="FoodContainer">
+        <div id="FoodsContainer" >
+        <div class="FoodContainer" v-for="recipe in savedrecipes" :key="recipe.id" >
             <div class="ImageContainer">
-                <img :src="require('@/public/spagetti.jpg')" alt="Spaghetti Carbonara">
+                <img :src="recipe.image" :alt="recipe.name">
             </div>
             <p class="NameOfCuisine">
-                CARBONARA
+                {{ recipe.name }}
             </p>
-            <button class="unsave-btn">
-                Unsave recipe
-            </button>
-        </div>
-        <div class="FoodContainer">
-            <div class="ImageContainer">
-                <img :src="require('@/public/salmondish.jpg')" alt="Salmon Dish">
-            </div>
-            <p class="NameOfCuisine">
-                SALMON
-            </p>
-            <button class="unsave-btn">
-                Unsave recipe
-            </button>
-        </div>
-        <div class="FoodContainer">
-            <div class="ImageContainer">
-                <img :src="require('@/public/pizza.jpg')" alt="Pizza">
-            </div>
-            <p class="NameOfCuisine">
-                PIZZA
-            </p>
-            <button class="unsave-btn">
+            <button class="unsave-btn" @click="unsaveRecipe(recipe.id)">
                 Unsave recipe
             </button>
         </div>
@@ -41,12 +19,42 @@
 
 <script>
 import NavigationPart from '@/components/NavigationPart.vue';
-
+import { db, collection, onSnapshot, deleteDoc, doc } from '../firebase'
 export default {
     components:{
         NavigationPart
+    },
+    data() {
+    return {
+      savedrecipes: [],
+    };
+  },
+  created() {
+    this.getSavedRecipes();
+  },
+  methods: {
+    async getSavedRecipes() {
+      const recipesCollection = collection(db, "savedrecipes");
+      onSnapshot(recipesCollection, (snapshot) => {
+        this.savedrecipes = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+      }, (error) => {
+        console.error("Error fetching recipes: ", error);
+        this.$toast.error('There was an error fetching saved recipes!');
+      });
+    },
+    async unsaveRecipe(id) {
+      try {
+        await deleteDoc(doc(db, "savedrecipes", id))
+        this.$toast.success('Successfully deleted recipe!');
+      }
+      catch (error) {
+        this.$toast.error('Could not delete the recipe!');
+      }
     }
-};
+}};
 </script>
 
 <style scoped>

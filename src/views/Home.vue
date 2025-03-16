@@ -4,7 +4,7 @@
             <HeaderComponent/>
         </header>
         <main>
-            <RecipeLists/>
+            <RecipeLists recipes="recipes"/>
         </main>
         <footer>
     
@@ -19,7 +19,7 @@
         components:{
             RecipeLists,
             HeaderComponent
-        }
+        }, 
     }
     </script>
     <style scoped>

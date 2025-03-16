@@ -17,8 +17,13 @@ const routes = [
   { path: '/home', component: Home },  
   { path: '/newrecipe', component: CreateRecipe },  
   { path: '/userrecipe', component: MyRecipes },  
-  { path: '/details', component: RecipeDetails },  
   { path: '/saved', component: SavedRecipes },  
+  {
+    path: '/details/:id',
+    name: 'details',
+    component: RecipeDetails,
+    props: true, 
+  },
 ];
 
 const router = new VueRouter({
