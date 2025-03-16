@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, FacebookAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import {getFirestore, onSnapshot, collection, doc, deleteDoc, setDoc, addDoc, orderBy, query} from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_API_KEY,
@@ -16,6 +17,7 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 const facebookProvider = new FacebookAuthProvider();
+const db = getFirestore(app)
 
 export { auth, facebookProvider, signInWithPopup, signOut, onAuthStateChanged };
 
