@@ -17,6 +17,12 @@
 <script>
 import { addDoc, collection, db, query, where, getDocs } from '../firebase'
 export default {
+    computed: {
+        user() {
+            const user = this.$store.getters.user;
+            return user;
+        },
+    },
     props: {
         recipe: {
             type: Object
@@ -25,8 +31,12 @@ export default {
     methods: {
         async saveRecipe(recipe) {
             try {
+                if (!this.user || !this.user.uid) {
+                    this.$toast.error('You must be logged in to submit a recipe!');
+                    return;
+                }
                 const recipesCollection = collection(db, "savedrecipes");
-                const q = query(recipesCollection, where("id", "==", recipe.id));
+                const q = query(recipesCollection, where("recipeid", "==", recipe.id), where("submittedBy", "==", this.user.uid));
 
                 const querySnapshot = await getDocs(q);
 
@@ -34,7 +44,7 @@ export default {
                     this.$toast.error('Already saved!');
                 } else {
 
-                    await addDoc(recipesCollection, recipe);
+                    await addDoc(recipesCollection, {name:recipe.name, ingredients:recipe.ingredients, instructions:recipe.instructions, image:recipe.image, submittedBy: this.user.uid, recipeid:recipe.id});
                     this.$toast.success('Recipe saved successfully!');
                 }
             } catch (error) {

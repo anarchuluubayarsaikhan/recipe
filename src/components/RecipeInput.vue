@@ -1,70 +1,80 @@
 <template>
-   
-        <div id="RecipeInputPage">
-            <h2>Add a New Recipe</h2>
 
-            <form @submit.prevent="submitRecipe" class="recipe-form">
-                <div class="form-group">
-                    <label for="recipeName">Recipe Name</label>
-                    <input type="text" id="recipeName" v-model="newRecipe.name" placeholder="Enter recipe name"
-                        required/>
-                </div>
+    <div id="RecipeInputPage">
+        <h2>Add a New Recipe</h2>
 
-                <div class="form-group">
-                    <label for="recipeImage">Recipe Image (URL)</label>
-                    <input type="url" id="recipeImage" v-model="newRecipe.image" placeholder="Enter recipe image URL"
-                         required/>
-                </div>
+        <form @submit.prevent="submitRecipe" class="recipe-form">
+            <div class="form-group">
+                <label for="recipeName">Recipe Name</label>
+                <input type="text" id="recipeName" v-model="newRecipe.name" placeholder="Enter recipe name" required />
+            </div>
 
-                <div class="form-group">
-                    <label for="ingredients">Ingredients</label>
-                    <textarea id="ingredients" v-model="newRecipe.ingredients"
-                        placeholder="List ingredients, separated by commas" required></textarea>
-                </div>
+            <div class="form-group">
+                <label for="recipeImage">Recipe Image (URL)</label>
+                <input type="url" id="recipeImage" v-model="newRecipe.image" placeholder="Enter recipe image URL"
+                    required />
+            </div>
 
-                <div class="form-group">
-                    <label for="instructions">Preparation Instructions</label>
-                    <textarea id="instructions" v-model="newRecipe.instructions"
-                        placeholder="Write preparation instructions" required></textarea>
-                </div>
+            <div class="form-group">
+                <label for="ingredients">Ingredients</label>
+                <textarea id="ingredients" v-model="newRecipe.ingredients"
+                    placeholder="List ingredients, separated by commas" required></textarea>
+            </div>
 
-                <button type="submit" class="submit-btn">Save Recipe</button>
-            </form>
-        </div>
+            <div class="form-group">
+                <label for="instructions">Preparation Instructions</label>
+                <textarea id="instructions" v-model="newRecipe.instructions"
+                    placeholder="Write preparation instructions" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Save Recipe</button>
+        </form>
+    </div>
 </template>
 
 <script>
-import {db, addDoc, collection} from '../firebase'
+import { db, addDoc, collection } from '../firebase'
 export default {
-    data(){
-        return{
-            newRecipe:{
-                name:"",
-                image:"",
-                ingredients:"",
-                instructions:""
+    computed: {
+        user() {
+            const user = this.$store.getters.user;
+            return user;
+        },
+    },
+    data() {
+        return {
+            newRecipe: {
+                name: "",
+                image: "",
+                ingredients: "",
+                instructions: ""
             }
         }
-    }, 
-    methods:{
+    },
+    methods: {
         async submitRecipe() {
-      try {
-          await addDoc(collection(db, "newrecipe"), {
-          name: this.newRecipe.name,
-          image: this.newRecipe.image,
-          ingredients: this.newRecipe.ingredients,
-          instructions: this.newRecipe.instructions
-        });
-        this.newRecipe = {}
-        this.$toast.success('Recipe added successfully!');
-      } catch (error) {
-        this.$toast.error('Error saving recipe!');
-        console.error("Error saving recipe:", error);
-      }
-    }
+            try {
+                if (!this.user || !this.user.uid) {
+                    this.$toast.error('You must be logged in to submit a recipe!');
+                    return;
+                }
+                await addDoc(collection(db, "newrecipe"), {
+                    name: this.newRecipe.name,
+                    image: this.newRecipe.image,
+                    ingredients: this.newRecipe.ingredients,
+                    instructions: this.newRecipe.instructions,
+                    submittedBy: this.user.uid
+                });
+                this.newRecipe = {}
+                this.$toast.success('Recipe added successfully!');
+            } catch (error) {
+                this.$toast.error('Error saving recipe!');
+                console.error("Error saving recipe:", error);
+            }
         }
     }
-;
+}
+    ;
 </script>
 
 <style scoped>
@@ -125,7 +135,7 @@ button.submit-btn {
 }
 
 button.submit-btn:hover {
-    color:white;
+    color: white;
 }
 
 .recipe-display {

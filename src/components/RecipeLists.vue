@@ -1,46 +1,34 @@
 <template>
     <div id="FoodsContainer">
-       <RecipeCard v-for="recipe in recipes" :key="recipe.id" :recipe="recipe"/>
+        <RecipeCard v-for="recipe in recipes" :key="recipe.id" :recipe="recipe" />
     </div>
 </template>
 
 <script>
 import RecipeCard from './RecipeCard.vue';
-import { db, collection, onSnapshot } from '../firebase'
+
 export default {
-    components:{
-        RecipeCard,
-    },
-    data(){
-            return{
-                recipes:[]
-            }
-        },
-        created(){
-            this.getRecipes()
-        },
-        methods:{
-            async getRecipes(){
-                const recipesCollection = collection(db,"allrecipes");
-                onSnapshot(recipesCollection,(snapshot)=>{
-                    this.recipes=snapshot.docs.map(doc=>({
-                        id:doc.id,
-                        ...doc.data(),
-                    }))
-                })
-            }
+    props: {
+        recipes: {
+            type: Array,
+            required: true
         }
-};
+    },
+    components: {
+        RecipeCard,
+    }
+}
 </script>
+
 <style scoped>
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  background-color: #f9f9f9;
-  margin: 0;
-  padding: 0;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
 }
 
 #FoodsContainer {

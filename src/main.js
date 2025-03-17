@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router';
 import Toast, { POSITION } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
+import store from './store';
 
 Vue.config.productionTip = false
 Vue.use(Toast, {
@@ -15,4 +16,5 @@ Vue.use(Toast, {
 new Vue({
   render: h => h(App),
   router,
+  store
 }).$mount('#app')

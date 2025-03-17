@@ -1,30 +1,26 @@
 <template>
   <div>
     <button @click="loginWithFacebook">Login with Facebook</button>
-
-    <div v-if="user">
-      <h3>Welcome, {{ user.displayName }}</h3>
-      <img :src="user.photoURL" alt="Profile picture" />
-      <button @click="logout">Logout</button>
-    </div>
   </div>
 </template>
 
 <script>
-import { auth, facebookProvider, signInWithPopup, signOut, onAuthStateChanged } from '../firebase';
+import { auth, facebookProvider, signInWithPopup, onAuthStateChanged } from '../firebase';
+import { mapGetters } from 'vuex';
+import store  from '../store'
 
 export default {
-  data() {
-    return {
-      user: null
-    };
+  components: {
+  },
+  computed: {
+    ...mapGetters(['user']),
   },
   created() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        this.user = user;
+        this.$store.dispatch('updateUser', user);
       } else {
-        this.user = null;
+        this.$store.dispatch('logout');
       }
     });
   },
@@ -32,24 +28,15 @@ export default {
     loginWithFacebook() {
       signInWithPopup(auth, facebookProvider)
         .then((result) => {
-          this.user = result.user;
+          const user = result.user;
+          store.commit("setUser", user);
+          localStorage.setItem("user", JSON.stringify(user));
+          window.location.href = '/';
         })
         .catch((error) => {
           console.error("Error logging in with Facebook: ", error.message);
         });
-    },
-    logout() {
-      signOut(auth)
-        .then(() => {
-          this.user = null;
-        })
-        .catch((error) => {
-          console.error("Error logging out: ", error.message);
-        });
     }
-  }
+  },
 };
 </script>
-
-<style scoped>
-</style>

@@ -1,38 +1,55 @@
 <template>
-  <div>
+  <div v-if="user">
     <NavigationPart />
-    <div id="FoodsContainer">
-      <div class="FoodContainer" v-for="(recipe) in recipes" :key="recipe.id">
-        <div class="ImageContainer">
-          <img :src="recipe.image" :alt="recipe.name" />
-        </div>
-        <p class="NameOfCuisine">{{ recipe.name }}</p>
-        <div class="button-group">
-          <button class="edit-btn" @click="editRecipe(recipe.id)">
-            Edit Recipe
-          </button>
-          <button class="delete-btn" @click="deleteRecipe(recipe.id)">
-            Delete Recipe
-          </button>
+    <div id="MyRecipes">
+      <div id="FoodsContainer">
+        <div class="FoodContainer" v-for="(recipe) in recipes" :key="recipe.id">
+          <router-link :to="{ name: 'mydetails', params: { id: recipe.id } }">
+            <div class="ImageContainer">
+              <img :src="recipe.image" :alt="recipe.name" />
+            </div>
+          </router-link>
+          <p class="NameOfCuisine">{{ recipe.name }}</p>
+          <div class="button-group">
+            <button class="edit-btn" @click="editRecipe(recipe)">
+              Edit Recipe
+            </button>
+            <button class="delete-btn" @click="deleteRecipe(recipe.id)">
+              Delete Recipe
+            </button>
+          </div>
         </div>
       </div>
+      <EditInput :editing="editing" :editingData="editingData" @close="closeForm" />
     </div>
-    <RecipeInput/>
+    <div v-if="loading" class="loading-overlay">
+      <p>Loading...</p>
+    </div>
   </div>
 </template>
 
 <script>
-import NavigationPart from '@/components/NavigationPart.vue';
-import { db, collection, updateDoc, deleteDoc, doc, onSnapshot } from '../firebase'
-import RecipeInput from '@/components/RecipeInput.vue';
+import NavigationPart from "@/components/NavigationPart.vue";
+import { db, collection, deleteDoc, doc, onSnapshot, query, where } from "../firebase";
+import EditInput from "@/components/EditInput.vue";
+
 export default {
+  computed: {
+    user() {
+      const user = this.$store.getters.user;
+      return user;
+    },
+  },
   components: {
     NavigationPart,
-    RecipeInput
+    EditInput,
   },
   data() {
     return {
       recipes: [],
+      loading: false,
+      editing: false,
+      editingData: {},
     };
   },
   created() {
@@ -40,55 +57,47 @@ export default {
   },
   methods: {
     async getRecipes() {
+      this.loading = true;
       const recipesCollection = collection(db, "newrecipe");
+      const recipesQuery = query(recipesCollection, where("submittedBy", "==", this.user.uid));
 
-      onSnapshot(recipesCollection, (snapshot) => {
-        this.recipes = snapshot.docs.map(doc => ({
+      onSnapshot(recipesQuery, (snapshot) => {
+        this.recipes = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+        this.loading = false;
       }, (error) => {
         console.error("Error fetching recipes: ", error);
-        this.$toast.error('There was an error fetching recipes!');
+        this.$toast.error("There was an error fetching recipes!");
       });
     },
-    async editRecipe(id) {
-      try {
 
-        await updateDoc(collection(db, "newrecipe", id), {
-          name: this.recipe.name,
-          image: this.recipe.image,
-          ingredients: this.recipe.ingredients,
-          instructions: this.recipe.instructions
-        })
-        this.$toast.success('Successfully updated your recipe!');
-      }
-      catch (error) {
-        this.$toast.error('There is error editing your recipe!');
-      }
+    async editRecipe(recipe) {
+      this.editing = true;
+      this.editingData = recipe;
     },
+
     async deleteRecipe(id) {
       try {
-        await deleteDoc(doc(db, "newrecipe", id))
-        this.$toast.success('Successfully deleted recipe!');
+        await deleteDoc(doc(db, "newrecipe", id));
+        this.$toast.success("Successfully deleted recipe!");
+      } catch (error) {
+        this.$toast.error("Could not delete the recipe!");
       }
-      catch (error) {
-        this.$toast.error('Could not delete the recipe!');
-      }
-    }
+    },
+
+    closeForm() {
+      this.editing = false;
+    },
   },
 };
 </script>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #f9f9f9;
-  margin: 0;
-  padding: 0;
+#MyRecipes {
+  display: flex;
+  align-content: space-between;
 }
 
 #FoodsContainer {
@@ -167,7 +176,6 @@ button {
   border-width: 1px;
   border-color: #433F09;
   border-radius: 8px;
-
 }
 
 button:hover {
@@ -178,19 +186,16 @@ button:focus {
   outline: 2px solid #433F09;
 }
 
-@media (max-width: 768px) {
-  #FoodsContainer {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  #FoodsContainer {
-    grid-template-columns: 1fr;
-  }
-
-  .NameOfCuisine {
-    font-size: 1rem;
-  }
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
 </style>
