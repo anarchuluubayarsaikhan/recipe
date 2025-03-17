@@ -37,7 +37,7 @@ export default {
     methods:{
         logOut(){
             try{
-                localStorage.removeItem("firebase:authUser:AIzaSyCJj00qKNJzoRv-stxgWT1geEn03JODeLw:[DEFAULT]")
+                localStorage.removeItem(`firebase:authUser:${process.env.VUE_APP_API_KEY}:[DEFAULT]`);
                 localStorage.removeItem("user")
                 window.location.href="/"
             }
