@@ -85,10 +85,9 @@ main {
     border-style: solid;
     border-radius: 12px;
     border-color: white;
-    height: 80vh;
     margin-top: 40px;
     border-width: 4px;
-    box-shadow: 10px 5px 2px #4A111D;
+    box-shadow: 10px 5px 2px #959380;
     background-color: white;
 }
 
@@ -118,7 +117,9 @@ main {
 }
 
 input {
-    padding: 8px 20px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 10px;
     font-size: 16px;
     border: 2px solid #ccc;
     border-radius: 8px;
@@ -142,9 +143,6 @@ input {
 }
 
 @media (max-width: 768px) {
-    #Logo {
-        font-size: 36px;
-    }
 
     #SubNavigation {
         flex-direction: column;

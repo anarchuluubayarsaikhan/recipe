@@ -93,5 +93,28 @@ nav a:hover {
 #user {
     color: white;
     margin-right: 60px;
+    display: flex;
+    gap:10px;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    #Logo {
+        font-size: 44px;
+    }
+    nav a{
+        font-size: 14px;
+    }
+    header {
+        display: flex;
+        gap:40px
+    }
+    #user {
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    align-items: center;
+}
+  
 }
 </style>
