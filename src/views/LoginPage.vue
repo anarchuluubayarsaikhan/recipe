@@ -2,7 +2,7 @@
     <div id="loginPage">
       <div class="content-container">
         <div class="logo-container">
-          <h1 class="title">Welcome to RecipeWeb</h1>
+          <h1 class="title">Please Login</h1>
         </div>
         <div class="login-container">
           <FacebookLogin />
