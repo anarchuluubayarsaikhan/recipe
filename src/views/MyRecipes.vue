@@ -198,4 +198,11 @@ button:focus {
   justify-content: center;
   z-index: 9999;
 }
+
+@media (max-width: 768px) {
+#FoodsContainer{
+  grid-template-columns: 1fr;
+  width: 100%;
+}
+}
 </style>

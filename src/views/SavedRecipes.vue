@@ -155,15 +155,11 @@ button.unsave-btn:focus {
   outline: 2px solid #ff4747;
 }
 
+
 @media (max-width: 768px) {
   #FoodsContainer {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  #FoodsContainer {
     grid-template-columns: 1fr;
+    width: 100%;
   }
 
   .NameOfCuisine {
