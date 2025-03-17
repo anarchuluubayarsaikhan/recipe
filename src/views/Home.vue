@@ -3,18 +3,18 @@
         <header>
             <div>
                 <NavigationPart />
-                <div id="SubNavigation">
-                    <input 
-                        type="text" 
-                        placeholder="Search" 
-                        v-model="searchdata" 
-                        @keydown.enter="searchFunction" 
-                    />
-                </div>
+                    <div id="SubNavigation">
+                        <input type="text" placeholder="Search" v-model="searchdata" @keydown.enter="searchFunction" />
+                        <button @click="addrecipe">
+                        +Add recipe
+                    </button>
+                    </div>
+                 
+    
             </div>
         </header>
         <main>
-            <RecipeLists :recipes="filteredRecipes" :searchfunction="searchFunction" :searchdata="searchdata"/>
+            <RecipeLists :recipes="filteredRecipes" :searchfunction="searchFunction" :searchdata="searchdata" />
         </main>
         <footer>
         </footer>
@@ -32,19 +32,19 @@ export default {
         RecipeLists,
         NavigationPart,
     },
-    data(){
-        return{
+    data() {
+        return {
             searchdata: "",
-            recipes: [],  
+            recipes: [],
         }
     },
     created() {
-        this.getRecipes();  
+        this.getRecipes();
     },
     computed: {
         filteredRecipes() {
             if (!this.searchdata) {
-                return this.recipes;  
+                return this.recipes;
             }
             return this.recipes.filter(recipe => {
                 return (
@@ -52,7 +52,7 @@ export default {
                     recipe.ingredients.toLowerCase().includes(this.searchdata.toLowerCase()) ||
                     recipe.instructions.toLowerCase().includes(this.searchdata.toLowerCase())
                 )
-               
+
             });
         }
     },
@@ -68,8 +68,12 @@ export default {
         },
         searchFunction() {
 
-        }
+        },
+        addrecipe(){
+        window.location.href='/newrecipe'
     }
+    },
+   
 };
 </script>
 
@@ -87,6 +91,7 @@ main {
     box-shadow: 10px 5px 2px #4A111D;
     background-color: white;
 }
+
 #SubNavigation {
     max-width: 1260px;
     margin: 20px auto;
@@ -100,7 +105,7 @@ input {
     font-size: 16px;
     border: 2px solid #ccc;
     border-radius: 8px;
-    width: 70%; 
+    width: 70%;
 }
 
 .button {
@@ -116,12 +121,12 @@ input {
 }
 
 .button:hover {
-    color:white; 
+    color: white;
 }
 
 @media (max-width: 768px) {
     #Logo {
-        font-size: 36px; 
+        font-size: 36px;
     }
 
     #SubNavigation {
