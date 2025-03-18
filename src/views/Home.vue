@@ -6,7 +6,7 @@
                 <div id="SubNavigation">
                     <input type="text" placeholder="Search" v-model="searchdata" @keydown.enter="searchFunction" />
                     <router-link to="/newrecipe">
-                        <button @click="addrecipe" id="addButton">
+                        <button id="addButton">
                             +Add recipe
                         </button>
                     </router-link>
@@ -71,9 +71,6 @@ export default {
         },
         searchFunction() {
 
-        },
-        addrecipe() {
-            window.location.href = '/newrecipe'
         }
     },
 
