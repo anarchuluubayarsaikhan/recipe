@@ -3,14 +3,17 @@
         <header>
             <div>
                 <NavigationPart />
-                    <div id="SubNavigation">
-                        <input type="text" placeholder="Search" v-model="searchdata" @keydown.enter="searchFunction" />
+                <div id="SubNavigation">
+                    <input type="text" placeholder="Search" v-model="searchdata" @keydown.enter="searchFunction" />
+                    <router-link to="/newrecipe">
                         <button @click="addrecipe" id="addButton">
-                        +Add recipe
-                    </button>
-                    </div>
-                 
-    
+                            +Add recipe
+                        </button>
+                    </router-link>
+
+                </div>
+
+
             </div>
         </header>
         <main>
@@ -69,11 +72,11 @@ export default {
         searchFunction() {
 
         },
-        addrecipe(){
-        window.location.href='/newrecipe'
-    }
+        addrecipe() {
+            window.location.href = '/newrecipe'
+        }
     },
-   
+
 };
 </script>
 
@@ -98,14 +101,16 @@ main {
     justify-content: space-between;
     align-items: center;
 }
-#addButton{
+
+#addButton {
     background-color: white;
     padding: 12px 20px;
     border-radius: 8px;
     font-size: 16px;
     font-weight: bold;
 }
-#addButton:hover{
+
+#addButton:hover {
     padding: 12px 20px;
     border-radius: 8px;
     background-color: #959380;

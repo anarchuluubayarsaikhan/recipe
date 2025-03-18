@@ -7,8 +7,12 @@
                 </h1>
             </a>
             <nav>
-                <a href="/userrecipe">MY RECIPES</a>
-                <a href="/saved">MY FAVORITES</a>
+                <router-link to="/userrecipe">
+                    MY RECIPES
+                </router-link>
+                <router-link to="/saved">
+                    MY FAVORITES
+                </router-link>
             </nav>
         </div>
         <div v-if="!user">
