@@ -118,6 +118,7 @@ nav a:hover {
         display: flex;
         flex-direction: column;
         gap:5px;
+        width: 100vw;
         margin: auto;
     }
     #user {
