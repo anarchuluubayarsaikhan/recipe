@@ -118,8 +118,10 @@ nav a:hover {
         display: flex;
         flex-direction: column;
         gap:5px;
-        width: 100vw;
-        margin: auto;
+        width: 84vw;
+        margin: 0;
+        padding: 0;
+        align-self: self-start;
     }
     #user {
     display: flex;
