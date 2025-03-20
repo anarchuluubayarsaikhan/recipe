@@ -121,7 +121,7 @@ nav a:hover {
         width: 84vw;
         margin: 0;
         padding: 0;
-        align-self: self-start;
+        justify-self: self-start;
     }
     #user {
     display: flex;
