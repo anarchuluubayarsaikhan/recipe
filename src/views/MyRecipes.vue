@@ -8,8 +8,8 @@
             <div class="ImageContainer">
               <img :src="recipe.image" :alt="recipe.name" />
             </div>
+          </router-link>
           <p class="NameOfCuisine">{{ recipe.name }}</p>
-        </router-link>
           <div class="button-group">
             <button class="edit-btn" @click="editRecipe(recipe)">
               Edit Recipe

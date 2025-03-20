@@ -117,7 +117,8 @@ nav a:hover {
     header {
         display: flex;
         flex-direction: column;
-        gap:5px
+        gap:5px;
+        margin: auto;
     }
     #user {
     display: flex;
