@@ -7,10 +7,10 @@
         <div class="ImageContainer">
           <img :src="recipe.image" :alt="recipe.name">
         </div>
-      </router-link>
         <p class="NameOfCuisine">
           {{ recipe.name }}
         </p>
+      </router-link>
         <button class="unsave-btn" @click="unsaveRecipe(recipe.id)">
           Unsave recipe
         </button>

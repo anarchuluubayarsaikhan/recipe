@@ -148,12 +148,12 @@ input {
 
     #SubNavigation {
         flex-direction: column;
-        align-items: stretch;
+        align-items: end;
+        gap: 16px;
     }
 
     input {
         width: 100%;
-        margin-bottom: 10px;
     }
 }
 </style>

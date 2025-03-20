@@ -15,7 +15,7 @@
                 </router-link>
             </nav>
         </div>
-        <div v-if="!user">
+        <div v-if="!user" class="loginButton">
             <FacebookLogin/>
         </div>
        
@@ -63,6 +63,8 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
+    max-width: 1250px;
+    margin: auto;
 }
 
 nav {
@@ -106,19 +108,27 @@ nav a:hover {
     #Logo {
         font-size: 44px;
     }
+    #LogoContainer{
+        align-self: self-start;
+    }
     nav a{
         font-size: 14px;
     }
     header {
         display: flex;
-        gap:40px
+        flex-direction: column;
+        gap:5px
     }
     #user {
     display: flex;
     flex-direction: column;
     gap:10px;
     align-items: center;
+    align-self: self-end;
 }
+    .loginButton{
+      align-self: self-end;
+    }
   
 }
 </style>
