@@ -6,7 +6,7 @@
                     RecipeWeb
                 </h1>
             </a>
-            <nav>
+            <nav id="navigantionlinks">
                 <router-link to="/userrecipe">
                     MY RECIPES
                 </router-link>
@@ -132,6 +132,9 @@ nav a:hover {
 }
     .loginButton{
       align-self: self-end;
+    }
+    #navigantionlinks{
+        font-size: 14px;
     }
   
 }
